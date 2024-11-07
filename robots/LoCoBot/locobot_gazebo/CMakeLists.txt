@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   dynamixel_workbench_msgs
   actionlib_msgs
   gazebo_msgs
+  locobot_control
 )
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -107,7 +108,7 @@ catkin_python_setup()
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
- CATKIN_DEPENDS roscpp sensor_msgs geometry_msgs actionlib actionlib_msgs dynamixel_workbench_msgs
+ CATKIN_DEPENDS roscpp sensor_msgs geometry_msgs actionlib actionlib_msgs dynamixel_workbench_msgs 
 )
 ###########
 ## Build ##
