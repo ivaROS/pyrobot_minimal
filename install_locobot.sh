@@ -4,7 +4,6 @@ helpFunction()
 {
    echo ""
    echo -e "\t-t Decides the type of installation. Available Options: full or sim_only"
-   echo -e "\t-p Decides the python version for pyRobot. Available Options: 2 or 3"
    echo -e "\t-l Decides the type of LoCoBot hardware platform. Available Options: cmu or interbotix"
    exit 1 # Exit script after printing help
 }
@@ -13,14 +12,13 @@ while getopts "t:p:l:" opt
 do
    case "$opt" in
       t ) INSTALL_TYPE="$OPTARG" ;;
-      p ) PYTHON_VERSION="$OPTARG" ;;
       l ) LOCOBOT_PLATFORM="$OPTARG" ;;
       ? ) helpFunction ;; # Print helpFunction in case parameter is non-existent
    esac
 done
 
 # Print helpFunction in case parameters are empty
-if [ -z "$INSTALL_TYPE" ] || [ -z "$PYTHON_VERSION" ] || [ -z "$LOCOBOT_PLATFORM" ]; then
+if [ -z "$INSTALL_TYPE" ] || [ -z "$LOCOBOT_PLATFORM" ]; then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
@@ -31,28 +29,15 @@ if [ $INSTALL_TYPE != "full" ] && [ $INSTALL_TYPE != "sim_only" ]; then
    helpFunction
 fi
 
-if [ $PYTHON_VERSION != "2" ] && [ $PYTHON_VERSION != "3" ]; then
-	echo "Invalid Python version type";
-   helpFunction
-fi
 
 if [ $LOCOBOT_PLATFORM != "cmu" ] && [ $LOCOBOT_PLATFORM != "interbotix" ]; then
 	echo "Invalid LoCoBot hardware platform type";
    helpFunction
 fi
 
+PYTHON_VERSION="3"
 ubuntu_version="$(lsb_release -r -s)"
-
-if [ $ubuntu_version == "16.04" ]; then
-	ROS_NAME="kinetic"
-elif [ $ubuntu_version == "18.04" ]; then
-	ROS_NAME="melodic"
-else
-	echo -e "Unsupported Ubuntu verison: $ubuntu_version"
-	echo -e "pyRobot only works with 16.04 or 18.04"
-	exit 1
-fi
-
+ROS_NAME="noetic"
 echo "Ubuntu $ubuntu_version detected. ROS-$ROS_NAME chosen for installation.";
 
 echo "$INSTALL_TYPE installation type is chosen for LoCoBot."
@@ -64,117 +49,36 @@ trap "kill 0" EXIT
 echo -e "\e[1;33m ******************************************* \e[0m"
 echo -e "\e[1;33m The installation takes around half an hour! \e[0m"
 echo -e "\e[1;33m ******************************************* \e[0m"
-sleep 4
 start_time="$(date -u +%s)"
 
-install_packages () {
-	pkg_names=("$@")
-	for package_name in "${pkg_names[@]}"; 
-	do
-		if [ $(dpkg-query -W -f='${Status}' $package_name 2>/dev/null | grep -c "ok installed") -eq 0 ]; then
-		    sudo apt-get -y install $package_name
-		else
-		    echo "${package_name} is already installed";
-		fi
-	done
-}
+# STEP 5 - Setup catkin workspace
+echo "Setting up robot software..."
+PYROBOTMIN_PATH=$(dirname "${BASH_SOURCE[0]}")
+LOCOBOT_PATH=$PYROBOTMIN_PATH/robots/LoCoBot
+LOCOBOT_URDF_PATH=$LOCOBOT_PATH/locobot_description/urdf
+LOCOBOT_MOVEIT_PATH=$LOCOBOT_PATH/locobot_moveit_config/config
+LOCOBOT_CONTROL_SRC=$LOCOBOT_PATH/locobot_control/src
 
+if [ ! -f "$LOCOBOT_URDF_PATH/locobot_description.urdf" ]; then
+  ln $LOCOBOT_URDF_PATH/${LOCOBOT_PLATFORM}_locobot_description.urdf $LOCOBOT_URDF_PATH/locobot_description.urdf
+fi
+if [ ! -f "$LOCOBOT_MOVEIT_PATH/locobot.srdf" ]; then
+  ln $LOCOBOT_MOVEIT_PATH/${LOCOBOT_PLATFORM}_locobot.srdf $LOCOBOT_MOVEIT_PATH/locobot.srdf
+fi
+echo "Creating hard links.  Better to have be flag in launch file"
 
-# STEP 0 - Make sure you have installed Ubuntu 16.04, and upgrade to lastest dist
-#if [ $(dpkg-query -W -f='${Status}' librealsense2 2>/dev/null | grep -c "ok installed") -eq 0 ]; then 
-#        sudo apt-get update && sudo apt-get -y upgrade && sudo apt-get -y dist-upgrade
-#fi
-
-
-# STEP 1 - Install basic dependencies
-declare -a package_names=(
-	"python-tk"
-	"python-sip"
-	"vim" 
-	"git" 
-	"terminator"
-	"python-pip"
-	"python-dev"
-	"python-virtualenv"
-	"screen"
-	"openssh-server" 
-	"libssl-dev" 
-	"libusb-1.0-0-dev"
-	"libgtk-3-dev" 
-	"libglfw3-dev"
-	)
-install_packages "${package_names[@]}"
-
-sudo pip install --upgrade cryptography
-sudo python -m easy_install --upgrade pyOpenSSL
-sudo pip install --upgrade pip==20.3
-
-
-# STEP 2 - Install ROS 
-
-if [ $ROS_NAME == "kinetic" ]; then
-
-	if [ $(dpkg-query -W -f='${Status}' ros-kinetic-desktop-full 2>/dev/null | grep -c "ok installed") -eq 0 ]; then 
-		echo "Installing ROS..."
-		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros1-latest.list'
-		sudo -E apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-		sudo apt-get update
-		sudo apt-get -y install ros-kinetic-desktop-full
-		if [ -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
-		    sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
-		fi
-		sudo apt -y install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
-		sudo apt -y install python-rosdep
-		sudo rosdep init
-		rosdep update
-		echo "source /opt/ros/kinetic/setup.bash" >> ~/.bashrc
-	else
-		echo "ros-kinetic-desktop-full is already installed";
-	fi
-else
-	if [ $(dpkg-query -W -f='${Status}' ros-melodic-desktop-full 2>/dev/null | grep -c "ok installed") -eq 0 ]; then 
-		echo "Installing ROS..."
-		sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros1-latest.list'
-		sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-		sudo apt-get update
-		sudo apt-get -y install ros-melodic-desktop-full
-		if [ -f /etc/ros/rosdep/sources.list.d/20-default.list ]; then
-			sudo rm /etc/ros/rosdep/sources.list.d/20-default.list
-		fi
-		sudo apt -y install python-rosdep python-rosinstall python-rosinstall-generator python-wstool build-essential
-		sudo apt -y install python-rosdep
-		sudo rosdep init
-		rosdep update
-		echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
-	else
-		echo "ros-melodic-desktop-full is already installed";
-	fi
+if [ $LOCOBOT_PLATFORM == "cmu" ]; then
+  sed -i 's/\(float restJnts\[5\] = \)\(.*\)/\1{0, -0.3890, 1.617, -0.1812, 0.0153};/' \
+        $LOCOBOT_CONTROL_SRC/locobot_controller.cpp
+fi
+if [ $LOCOBOT_PLATFORM == "interbotix" ]; then
+  sed -i 's/\(float restJnts\[5\] = \)\(.*\)/\1{0, -1.30, 1.617, 0.5, 0};/'  \
+        $LOCOBOT_CONTROL_SRC/locobot_controller.cpp
 fi
 
-source /opt/ros/$ROS_NAME/setup.bash
+exit
 
-
-# STEP 3 - Install ROS debian dependencies
-declare -a ros_package_names=(
-	"ros-$ROS_NAME-dynamixel-motor" 
-	"ros-$ROS_NAME-moveit" 
-	"ros-$ROS_NAME-trac-ik"
-	"ros-$ROS_NAME-ar-track-alvar"
-	"ros-$ROS_NAME-move-base"
-	"ros-$ROS_NAME-ros-control"
-	"ros-$ROS_NAME-gazebo-ros-control"
-	"ros-$ROS_NAME-ros-controllers"
-	"ros-$ROS_NAME-navigation"
-	"ros-$ROS_NAME-rgbd-launch"
-	"ros-$ROS_NAME-kdl-parser-py"
-	"ros-$ROS_NAME-orocos-kdl"
-	"ros-$ROS_NAME-python-orocos-kdl"
-  	"ros-$ROS_NAME-ddynamic-reconfigure"
-	#"ros-$ROS_NAME-libcreate"
-	)
-
-install_packages "${ros_package_names[@]}"
-
+fddffd
 if [ $INSTALL_TYPE == "full" ]; then
 
 	# STEP 4 - Install camera (Intel Realsense D435)
@@ -224,38 +128,6 @@ if [ $INSTALL_TYPE == "full" ]; then
 	catkin_make install
 	echo "source $CAMERA_FOLDER/devel/setup.bash" >> ~/.bashrc
 	source $CAMERA_FOLDER/devel/setup.bash
-fi
-
-# STEP 5 - Setup catkin workspace
-echo "Setting up robot software..."
-LOCOBOT_FOLDER=~/low_cost_ws
-if [ ! -d "$LOCOBOT_FOLDER/src" ]; then
-	mkdir -p $LOCOBOT_FOLDER/src
-	cd $LOCOBOT_FOLDER/src
-	catkin_init_workspace
-fi
-if [ ! -d "$LOCOBOT_FOLDER/src/pyrobot" ]; then
-	cd $LOCOBOT_FOLDER/src
-	git clone https://github.com/facebookresearch/pyrobot.git
-	cd pyrobot
-	git checkout main
-	git submodule update --init --recursive
-  if [ $LOCOBOT_PLATFORM == "cmu" ]; then
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_description/urdf
-    ln cmu_locobot_description.urdf locobot_description.urdf
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_moveit_config/config
-    ln cmu_locobot.srdf locobot.srdf
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_control/src
-    sed -i 's/\(float restJnts\[5\] = \)\(.*\)/\1{0, -0.3890, 1.617, -0.1812, 0.0153};/' locobot_controller.cpp
-  fi
-  if [ $LOCOBOT_PLATFORM == "interbotix" ]; then
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_description/urdf
-    ln interbotix_locobot_description.urdf locobot_description.urdf
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_moveit_config/config
-    ln interbotix_locobot.srdf locobot.srdf
-    cd $LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_control/src
-    sed -i 's/\(float restJnts\[5\] = \)\(.*\)/\1{0, -1.30, 1.617, 0.5, 0};/' locobot_controller.cpp
-  fi
 fi
 
 if [ ! -d "$LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/thirdparty" ]; then

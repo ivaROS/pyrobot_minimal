@@ -22,7 +22,12 @@ if [ ! -d "$VIRTUALENV_FOLDER" ]; then
 	pip install catkin_pkg pyyaml empy rospkg
 	python -m pip install --upgrade numpy
 	pip install .
+
+    pip install --upgrade cryptography
+    python -m easy_install --upgrade pyOpenSSL
+
 	deactivate
+#sudo pip install --upgrade pip==20.3
 fi
 
 exit
