@@ -25,10 +25,22 @@ DO NOT FOLLOW THE ORIGINAL INSTRUCTIONS BELOW. NEW ONES ARE CURRENTLY BEING DEVE
 
 ### What we do so far
 
+**First set of steps that are apt and python related:**<BR>
 First get noetic and turtlebot installed (we have our custom [turtlebot_noetic](https://github.com/ivaROS/noetic_turtlebot) script for doing that in one go.<BR>
 use `install_base.sh` with sudo escalation to install via apt. <BR>
 use `install_python.sh` to create a local virtual environment (may or may not be critical to next steps). <BR>
-use wstool to get dynamixel dependencies. <BR>
+
+**Next prep the ROS workspace:**<BR>
+use `install_locosim.sh` to install the bare bones simulation stuff (not for running on actual locobot).
+use wstool to get dynamixel dependencies. in the local ROS workspace try: <BR>
+```
+wstool init src src/pyrobot_minimal
+wstool merge -t src src/pyrobot_minimal
+wstool update -t src
+```
+and it should snag some files.  These might already be apt-get-able.  Should check before doing this part.  Looks like
+ROS noetic has dynamixel SDK and workbench.
+
 run catkin build <BR>
 NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
 
