@@ -61,6 +61,12 @@ rostopic pub /joint_7_cntrl/command std_msgs/Float64 0.02
 ```
 The first two adjust the camra pan/tilt.  The camera should be facing left after publishing to the tilt/pan topics. The next 5 control the robot arm joint angles, with Joint 2 going first to pick up the arm from lying on the floor. the second keeps the arm pointing straight ahead. The last one's continue down the chain.  Finally, joints 6 and 7 are for the gripper.  Setting them both to zero closes the gripper.  Setting them as opposite numbers will open the gripper.  Do not go past -0.05 / 0.05 respectively for them, as the "fingers" slide off the rail.
 
+Once the robot arm and camera are set, it is then possible to teleoperate the robot with the keyboard:
+```
+roslaunch turtlebot_teleop keyboard_teleop.launch
+```
+Pressing the movement keys should show the robot driving around in the empty world.  good luck developing further from this point!
+
 ### Limitations of Repository
 
 This conversion to an easy Noetic installation is a work in progress.  Current emphasis is on realizing a Gazebo simulation instance for building out a reasonable autonomy stack using best practice and state-of-the-art methods.  As our understanding of the pyrobot/locobot API improves, we'll transition to extending the install scripts to apply to the real robot.  Doing so is not too difficult since the base implementation requires achieving three outcomes (1) control of the kobuki/create base using existing libraries, (2) control of the robot arm using existing libraries, and (3) control of the camera P/T mechanism using existing libraries.  Established processes exist for these steps.
