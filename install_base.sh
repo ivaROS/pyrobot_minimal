@@ -72,6 +72,8 @@ declare -a ros_package_names=(
 	"ros-$ROS_NAME-orocos-kdl"
 	"ros-$ROS_NAME-python-orocos-kdl"
   	"ros-$ROS_NAME-ddynamic-reconfigure"
+    "ros-$ROS_NAME-ros-control"
+    "ros-$ROS_NAME-ros-controllers"
 	#"ros-$ROS_NAME-libcreate"
 	)
 

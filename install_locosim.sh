@@ -16,7 +16,7 @@ do
 done
 
 # Print helpFunction in case parameters are empty
-if [ -z "$INSTALL_TYPE" ] || [ -z "$LOCOBOT_PLATFORM" ]; then
+if [ -z "$LOCOBOT_PLATFORM" ]; then
    echo "Some or all of the parameters are empty";
    helpFunction
 fi
