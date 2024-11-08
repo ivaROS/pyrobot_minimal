@@ -39,8 +39,13 @@ wstool init src
 wstool merge -t src src/pyrobot_minimal/pyrobot.rosinstall
 wstool update -t src
 ```
-and it should snag some files.  These might already be apt-get-able.  Should check before doing this part.  Looks like
-ROS noetic has dynamixel SDK and workbench.
+or from within the `src` directory it may be possible to run
+```
+wstool init 
+wstool merge src/pyrobot_minimal/pyrobot.rosinstall
+wstool update 
+```
+Either way the update should snag some files.  These might already be apt-get-able.  Should check before doing this part. _Note: Looks like ROS noetic has dynamixel SDK and workbench. May not need to install like that._
 
 run catkin build <BR>
 NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
