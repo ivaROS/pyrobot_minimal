@@ -49,7 +49,7 @@ Either way the update should snag some files.  These might already be apt-get-ab
 
 run catkin build <BR>
 NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
-
+With latest revisions, it just required `catkin build` to be run twice.
 
 ### Installing both PyRobot and LoCoBot dependencies
 
