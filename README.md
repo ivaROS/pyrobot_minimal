@@ -59,6 +59,7 @@ rostopic pub /joint_5_cntrl/command std_msgs/Float64 0.0
 rostopic pub /joint_6_cntrl/command std_msgs/Float64 "data: -0.02"
 rostopic pub /joint_7_cntrl/command std_msgs/Float64 0.02
 ```
+Remember that they can't all be run at once.  Hit Ctrl-C to terminate the previous `rostopic pub` command and execute the next.
 The first two adjust the camra pan/tilt.  The camera should be facing left after publishing to the tilt/pan topics. The next 5 control the robot arm joint angles, with Joint 2 going first to pick up the arm from lying on the floor. the second keeps the arm pointing straight ahead. The last one's continue down the chain.  Finally, joints 6 and 7 are for the gripper.  Setting them both to zero closes the gripper.  Setting them as opposite numbers will open the gripper.  Do not go past -0.05 / 0.05 respectively for them, as the "fingers" slide off the rail.
 
 Once the robot arm and camera are set, it is then possible to teleoperate the robot with the keyboard:
@@ -66,6 +67,15 @@ Once the robot arm and camera are set, it is then possible to teleoperate the ro
 roslaunch turtlebot_teleop keyboard_teleop.launch
 ```
 Pressing the movement keys should show the robot driving around in the empty world.  good luck developing further from this point!
+
+Lastly, it is possible to test out the camera feeds by sending the camera to look forward and the arm to aim upwards:
+```
+rostopic pub /pan/command std_msgs/Float64 0.0
+rostopic pub /joint_3_cntrl/command std_msgs/Float64 "data: -0.2"
+```
+In rviz check out the camera view and the arm can be seen.
+
+_Note: It doesn't work too well, but the rviz launch is the standard `roslaunch locobot_description display.launch`.  Right now it is crapping out because some state information is not found (transform stuff I think)._
 
 ### Limitations of Repository
 
