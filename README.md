@@ -31,7 +31,8 @@ use `install_base.sh` with sudo escalation to install via apt. <BR>
 use `install_python.sh` to create a local virtual environment (may or may not be critical to next steps). <BR>
 
 **Next prep the ROS workspace:**<BR>
-use `install_locosim.sh` to install the bare bones simulation stuff (not for running on actual locobot).
+use `install_locosim.sh` to install the bare bones simulation stuff (not for running on actual locobot). <BR>
+The shell script should only be run once.  It makes some modifications that may not apply / work when run twice. <BR>
 use wstool to get dynamixel dependencies. in the local ROS workspace try: <BR>
 ```
 wstool init src src/pyrobot_minimal
