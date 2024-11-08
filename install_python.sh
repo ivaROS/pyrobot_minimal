@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 
-helpFunction()
-{
-   echo "No help. Just run"
-   exit 1 # Exit script after printing help
-}
+# Python installs required for pyrobot and locobot.
+# Does not require sudo access.
+# Ripped from pyrobot: https://github.com/facebookresearch/pyrobot
+
+if [ -z "$BASH_VERSION" ]; then
+    echo "$0 must be run from bash!"
+    exit 1
+fi
 
 ubuntu_version="$(lsb_release -r -s)"
 PYTHON_VERSION="3"
@@ -17,7 +20,7 @@ ROS_NAME="noetic"
 virtualenv_name="pyenv/pyrobot"
 VIRTUALENV_FOLDER=~/${virtualenv_name}
 if [ ! -d "$VIRTUALENV_FOLDER" ]; then
-	virtualenv -p /usr/bin/python3.$PYTHON_SUBVER $VIRTUALENV_FOLDER
+	virtualenv -p /usr/bin/python$PYTHON_VERSION.$PYTHON_SUBVER $VIRTUALENV_FOLDER
 	source ~/${virtualenv_name}/bin/activate
 	pip install catkin_pkg pyyaml empy rospkg
 	python -m pip install --upgrade numpy

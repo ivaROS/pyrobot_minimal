@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# Gazebo simulator install for locobot.
+# Does not require sudo access.
+# Ripped from pyrobot: https://github.com/facebookresearch/pyrobot
+
+if [ -z "$BASH_VERSION" ]; then
+    echo "$0 must be run from bash!"
+    exit 1
+fi
+
 helpFunction()
 {
    echo ""
@@ -7,7 +16,7 @@ helpFunction()
    exit 1 # Exit script after printing help
 }
 
-while getopts "t:p:l:" opt
+while getopts "l:" opt
 do
    case "$opt" in
       l ) LOCOBOT_PLATFORM="$OPTARG" ;;
@@ -17,19 +26,20 @@ done
 
 # Print helpFunction in case parameters are empty
 if [ -z "$LOCOBOT_PLATFORM" ]; then
-   echo "Some or all of the parameters are empty";
+   echo "No parameter given for locobot hardware.";
    helpFunction
 fi
 
 if [ $LOCOBOT_PLATFORM != "cmu" ] && [ $LOCOBOT_PLATFORM != "interbotix" ]; then
-	echo "Invalid LoCoBot hardware platform type";
+	echo "Invalid LoCoBot hardware platform type. Should be 'cmu' or 'interbotix'";
    helpFunction
 fi
 
 PYTHON_VERSION="3"
 ubuntu_version="$(lsb_release -r -s)"
 ROS_NAME="noetic"
-echo "Ubuntu $ubuntu_version detected. ROS-$ROS_NAME chosen for installation.";
+
+echo "Installing for Ubuntu $ubuntu_version. ROS-$ROS_NAME chosen for installation.";
 
 echo "$INSTALL_TYPE installation type is chosen for LoCoBot."
 echo "Python $PYTHON_VERSION chosen for pyRobot installation."
@@ -53,6 +63,7 @@ fi
 if [ ! -f "$LOCOBOT_MOVEIT_PATH/locobot.srdf" ]; then
   ln $LOCOBOT_MOVEIT_PATH/${LOCOBOT_PLATFORM}_locobot.srdf $LOCOBOT_MOVEIT_PATH/locobot.srdf
 fi
+
 echo "Creating hard links.  Better to have be flag in launch file"
 
 if [ $LOCOBOT_PLATFORM == "cmu" ]; then

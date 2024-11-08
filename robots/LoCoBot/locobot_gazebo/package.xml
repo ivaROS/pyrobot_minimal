@@ -24,6 +24,7 @@
   <depend>actionlib</depend>
   <depend>actionlib_msgs</depend>
   <depend>dynamixel_workbench_msgs</depend>
+  <depend>locobot_control</depend>
   <export>
   </export>
 </package>

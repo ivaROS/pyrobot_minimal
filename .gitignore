@@ -158,3 +158,7 @@ tmp/*
 
 # docusaurus
 node_modules
+
+# vim
+*.swp
+*.swo

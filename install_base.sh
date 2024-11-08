@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 
-helpFunction()
-{
-   echo "No help. Just run"
-   exit 1 # Exit script after printing help
-}
+# Python installs required for pyrobot and locobot.
+# Ripped from pyrobot: https://github.com/facebookresearch/pyrobot
+
+if [ -z "$BASH_VERSION" ]; then
+    echo "$0 must be run from bash!"
+    exit 1
+fi
+
+if (sudo -v) then
+    echo "User has sudo access."
+else
+    echo "User requires sudo access to run this script."
+    exit 1
+fi
 
 install_packages() 
 {
@@ -23,8 +32,6 @@ ubuntu_version="$(lsb_release -r -s)"
 PYTHON_VERSION="3"
 PYTHON_SUBVER="8"
 ROS_NAME="noetic"
-
-echo "Needs to have sudoer access."
 
 #===== INSTALL DEBIAN PACKAGES =====
 
@@ -50,11 +57,11 @@ sudo apt-get -y install python3-catkin-tools python3-catkin-pkg-modules
 sudo apt-get -y install python3-rosdep python3-rosinstall python3-rosinstall-generator python3-wstool 
 sudo apt-get -y build-essential
 
-echo "May need to run what follows.  I don't think so though. See if can avoid doing."
-echo "sudo rosdep init"
-echo "rosdep update"
-
-exit
+# echo "May need to run what follows.  I don't think so though. See if can avoid doing."
+# echo "sudo rosdep init"
+# echo "rosdep update"
+# 
+# exit
 
 # STEP 3 - Install ROS debian dependencies
 declare -a ros_package_names=(
@@ -80,7 +87,7 @@ declare -a ros_package_names=(
 install_packages "${ros_package_names[@]}"
 
 
-exit
+#exit
 
 # FROM LOCOBOT INSTALL
 
