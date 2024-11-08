@@ -35,8 +35,8 @@ use `install_locosim.sh` to install the bare bones simulation stuff (not for run
 The shell script should only be run once.  It makes some modifications that may not apply / work when run twice. <BR>
 use wstool to get dynamixel dependencies. in the local ROS workspace try: <BR>
 ```
-wstool init src src/pyrobot_minimal
-wstool merge -t src src/pyrobot_minimal
+wstool init src 
+wstool merge -t src src/pyrobot_minimal/pyrobot.rosinstall
 wstool update -t src
 ```
 and it should snag some files.  These might already be apt-get-able.  Should check before doing this part.  Looks like
