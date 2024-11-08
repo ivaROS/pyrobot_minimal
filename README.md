@@ -2,7 +2,7 @@
 
 [PyRobot](https://www.pyrobot.org/) is a light weight, high-level interface which provides hardware independent APIs for robotic manipulation and navigation. This repository also contains the low-level stack for [LoCoBot](http://locobot.org), a low cost mobile manipulator hardware platform.
 
-This repository is a fork of the original pyrobot repository but with some of the implementation removed.  The original pyrobot also consisted of autonomy stack modules that we either out of date or did not follow best practice.  They also complicated building of the ROS packages by enlarging the dependency space.  This minimal version strips out as much as possible, keeping only the necessary ingredients and a couple more that are easy to realize as they are based on `MoveIt`.  Ideally they should be removed  since MoveIt API does not fully align with how robot manipulator planning works in practice for kinematically redundant manipulators; even for kinematically sufficient manipulators.
+This repository is a fork of the original pyrobot repository but with some of the implementation removed.  The original pyrobot also consisted of autonomy stack modules that were either out of date or did not follow best practice.  They also complicated building of the ROS packages by enlarging the dependency space.  This minimal version strips out as much as possible, keeping only the necessary ingredients and a couple more that are easy to realize as they are based on `MoveIt`.  Ideally they should be removed  since MoveIt API does not fully align with how robot manipulator planning works in practice for kinematically redundant manipulators; even for kinematically sufficient manipulators.
 
 
 ## Installation
