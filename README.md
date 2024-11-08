@@ -25,7 +25,7 @@ DO NOT FOLLOW THE ORIGINAL INSTRUCTIONS BELOW. NEW ONES ARE CURRENTLY BEING DEVE
 
 ### What we do so far
 
-First get noetic and turtlebot installed (we have our custom [turtlebot_noetic](https://github.com/ivaROS/noetic_turtlebot) script for doing that in one go.
+First get noetic and turtlebot installed (we have our custom [turtlebot_noetic](https://github.com/ivaROS/noetic_turtlebot) script for doing that in one go.<BR>
 use `install_base.sh` with sudo escalation to install via apt. <BR>
 use `install_python.sh` to create a local virtual environment (may or may not be critical to next steps). <BR>
 use wstool to get dynamixel dependencies. <BR>
