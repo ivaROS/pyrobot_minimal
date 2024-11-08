@@ -25,11 +25,11 @@ DO NOT FOLLOW THE ORIGINAL INSTRUCTIONS BELOW. NEW ONES ARE CURRENTLY BEING DEVE
 
 ### What we do so far
 
-use `install_base.sh` with sudo escalation to install via apt.
-use `install_python.sh` to create a local virtual environment (may or may not be critical to next steps).
-use wstool to get dynamixel dependencies.
-run catkin build
-NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work.
+use `install_base.sh` with sudo escalation to install via apt. <BR>
+use `install_python.sh` to create a local virtual environment (may or may not be critical to next steps). <BR>
+use wstool to get dynamixel dependencies. <BR>
+run catkin build <BR>
+NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
 
 
 ### Installing both PyRobot and LoCoBot dependencies
