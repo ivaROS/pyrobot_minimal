@@ -38,6 +38,28 @@ NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_
 With latest revisions, it just required `catkin build` to be run twice. <BR>
 _Update 11/08:_ Using the older `catkin_xxx` stack had less problems.  Using the newer `catkin` may run better now too. It's evolving still. <BR>
 
+### Confirming Build w/LoCoBot
+
+After sourcing `devel/setup.bash`, getting a basic Gazebo simulation up and running should involve the following:
+```
+roslaunch locobot_gazebo gazbeo_locobot.launch base:=kobuki
+roslaunch locobot_gazebo gazebo_locobot_control.launch
+```
+run in two separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
+
+To adjust the pose of the robot run the following command lines and see the locobot servomotors adjust:
+```
+rostopic pub /tilt/command std_msgs/Float64 0.0
+rostopic pub /pan/command std_msgs/Float64 0.5
+rostopic pub /joint_2_cntrl/command std_msgs/Float64 0.0
+rostopic pub /joint_1_cntrl/command std_msgs/Float64 0.0
+rostopic pub /joint_3_cntrl/command std_msgs/Float64 0.0
+rostopic pub /joint_4_cntrl/command std_msgs/Float64 0.0
+rostopic pub /joint_5_cntrl/command std_msgs/Float64 0.0
+rostopic pub /joint_6_cntrl/command std_msgs/Float64 "data: -0.02"
+rostopic pub /joint_7_cntrl/command std_msgs/Float64 0.02
+```
+The first two adjust the camra pan/tilt.  The camera should be facing left after publishing to the tilt/pan topics. The next 5 control the robot arm joint angles, with Joint 2 going first to pick up the arm from lying on the floor. the second keeps the arm pointing straight ahead. The last one's continue down the chain.  Finally, joints 6 and 7 are for the gripper.  Setting them both to zero closes the gripper.  Setting them as opposite numbers will open the gripper.  Do not go past -0.05 / 0.05 respectively for them, as the "fingers" slide off the rail.
 
 ### Limitations of Repository
 
