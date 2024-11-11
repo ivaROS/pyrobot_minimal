@@ -34,9 +34,6 @@ wstool update
 Either way the update should snag some files.  These might already be apt-get-able.  Should check before doing this part. _Note: Looks like ROS noetic has dynamixel SDK and workbench. May not need to install like that._
 
 run catkin build <BR>
-NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
-With latest revisions, it just required `catkin build` to be run twice. <BR>
-_Update 11/08:_ Using the older `catkin_xxx` stack had less problems.  Using the newer `catkin` may run better now too. It's evolving still. <BR>
 
 ### Confirming Build w/LoCoBot
 
@@ -44,6 +41,7 @@ After sourcing `devel/setup.bash`, getting a basic Gazebo simulation up and runn
 ```
 roslaunch locobot_gazebo gazbeo_locobot.launch base:=kobuki
 roslaunch locobot_gazebo gazebo_locobot_control.launch
+rosrun robot_state_publisher robot_state_publisher
 ```
 run in two separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
 
@@ -74,8 +72,7 @@ rostopic pub /pan/command std_msgs/Float64 0.0
 rostopic pub /joint_3_cntrl/command std_msgs/Float64 "data: -0.2"
 ```
 In rviz check out the camera view and the arm can be seen.
-
-_Note: It doesn't work too well, but the rviz launch is the standard `roslaunch locobot_description display.launch`.  Right now it is crapping out because some state information is not found (transform stuff I think)._
+The rviz launch is the standard `roslaunch locobot_description display.launch`.
 
 ### Limitations of Repository
 
