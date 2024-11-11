@@ -40,10 +40,10 @@ run catkin build <BR>
 After sourcing `devel/setup.bash`, getting a basic Gazebo simulation up and running should involve the following:
 ```
 roslaunch locobot_gazebo gazbeo_locobot.launch base:=kobuki
-roslaunch locobot_gazebo gazebo_locobot_control.launch
 rosrun robot_state_publisher robot_state_publisher
+roslaunch locobot_gazebo gazebo_locobot_control.launch
 ```
-run in two separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
+run in three separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
 
 To adjust the pose of the robot run the following command lines and see the locobot servomotors adjust:
 ```
