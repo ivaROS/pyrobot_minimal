@@ -82,6 +82,12 @@ This conversion to an easy Noetic installation is a work in progress.  Current e
 realsense-related packages from `Software Updater` in ubuntu. Therefore, we recommend you not to update
 any libraries related to realsense. Check the list of updates carefully when ubuntu prompts software udpates.
 
+### Alterantives to PyRobot and PYRobot_minimal
+
+There is nothing too unique about the PyRobot setup.  It uses a kobuki base standard with the Turtlebot2, thus just installing turtlebot2 package will permit control of the PyRobot.  Just that the Gazebo models are not proper if simulation is important.  It uses a standard Interbotix manipulator setup, [WidowX 250](https://www.trossenrobotics.com/widowx-250), for which [Interbotix provides up to date git repos](https://github.com/Interbotix). Snag those and the arm can be controlled. There exists documentation on the interwebs for this arm ([example](https://github.com/IERoboticsAILab/wx250s_documentation)). Again, permits control and usage of the arm, but no Gazebo model for simulation.  If your development practice require Gazebo simulation, then this alternative is not suitable, but is a good start towards pre-installing the ROS packages needed for PyRobot_minimal to proceed faster.
+
+There is a remote possibility that the Interbotix PyRobot git repo has a configuration compatible with the LoCoBot.  This possibility was not tested due to learning about it later.
+
 ## Getting Started
 Please refer to [pyrobot.org](https://pyrobot.org/) and [locobot.org](http://locobot.org)
 
