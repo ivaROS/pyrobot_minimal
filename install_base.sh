@@ -41,6 +41,9 @@ ROS_NAME="noetic"
 sudo apt-get -y install ros-$ROS_NAME-kdl-* ros-$ROS_NAME-trac-ik*
 sudo apt-get -y install ros-$ROS_NAME-cv-bridge
 
+# Realsense stuff
+sudo apt-get -y install ros-$ROS_NAME-librealsense2 ros-$ROS_NAME-realsense2-*
+
 # PYTHON DEPENDENCIES
 echo "Python $PYTHON_VERSION needed for pyRobot installation."
 sudo apt-get -y install python3-virtualenv
