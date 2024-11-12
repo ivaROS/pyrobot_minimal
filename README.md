@@ -34,18 +34,16 @@ wstool update
 Either way the update should snag some files.  These might already be apt-get-able.  Should check before doing this part. _Note: Looks like ROS noetic has dynamixel SDK and workbench. May not need to install like that._
 
 run catkin build <BR>
-NOTE:  The current configuration is weird.  It will fail.  catkin build locobot_control, then locobot_gazebo, then catkin build all. it should work. <BR>
-With latest revisions, it just required `catkin build` to be run twice. <BR>
-_Update 11/08:_ Using the older `catkin_xxx` stack had less problems.  Using the newer `catkin` may run better now too. It's evolving still. <BR>
 
 ### Confirming Build w/LoCoBot
 
 After sourcing `devel/setup.bash`, getting a basic Gazebo simulation up and running should involve the following:
 ```
 roslaunch locobot_gazebo gazbeo_locobot.launch base:=kobuki
+rosrun robot_state_publisher robot_state_publisher
 roslaunch locobot_gazebo gazebo_locobot_control.launch
 ```
-run in two separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
+run in three separate terminals.  Failing to run the first line will lead to `controller_manager` spawn failure for the second line after some timeout period.  It should be obvious after about 1 second that the process is not advancing and will timeout.
 
 To adjust the pose of the robot run the following command lines and see the locobot servomotors adjust:
 ```
@@ -74,8 +72,7 @@ rostopic pub /pan/command std_msgs/Float64 0.0
 rostopic pub /joint_3_cntrl/command std_msgs/Float64 "data: -0.2"
 ```
 In rviz check out the camera view and the arm can be seen.
-
-_Note: It doesn't work too well, but the rviz launch is the standard `roslaunch locobot_description display.launch`.  Right now it is crapping out because some state information is not found (transform stuff I think)._
+The rviz launch is the standard `roslaunch locobot_description display.launch`.
 
 ### Limitations of Repository
 
@@ -84,6 +81,12 @@ This conversion to an easy Noetic installation is a work in progress.  Current e
 **Warning**: As realsense keeps updating, compatibility issues might occur if you accidentally update
 realsense-related packages from `Software Updater` in ubuntu. Therefore, we recommend you not to update
 any libraries related to realsense. Check the list of updates carefully when ubuntu prompts software udpates.
+
+### Alternatives to PyRobot and PYRobot_minimal
+
+There is nothing too unique about the PyRobot setup.  It uses a kobuki base standard with the Turtlebot2, thus just installing turtlebot2 package will permit control of the PyRobot.  Just that the Gazebo models are not proper if simulation is important.  It uses a standard Interbotix manipulator setup, [WidowX 250](https://www.trossenrobotics.com/widowx-250), for which [Interbotix provides up to date git repos](https://github.com/Interbotix). Snag those and the arm can be controlled. There exists documentation on the interwebs for this arm ([example](https://github.com/IERoboticsAILab/wx250s_documentation)). Again, permits control and usage of the arm, but no Gazebo model for simulation.  If your development practice require Gazebo simulation, then this alternative is not suitable, but is a good start towards pre-installing the ROS packages needed for PyRobot_minimal to proceed faster.
+
+There is a remote possibility that the Interbotix PyRobot git repo has a configuration compatible with the LoCoBot.  This possibility was not tested due to learning about it later.
 
 ## Getting Started
 Please refer to [pyrobot.org](https://pyrobot.org/) and [locobot.org](http://locobot.org)
