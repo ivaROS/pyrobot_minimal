@@ -31,9 +31,17 @@ wstool init
 wstool merge pyrobot_minimal/pyrobot.rosinstall
 wstool update 
 ```
-Either way the update should snag some files.  These might already be apt-get-able.  Should check before doing this part. _Note: Looks like ROS noetic has dynamixel SDK and workbench. May not need to install like that._
+Either way the update should snag some files.  See the subsection below to avoid wstool and rosinstall.
 
-run catkin build <BR>
+Run `catkin build` <BR>
+
+#### ROS Install Alternative
+
+The main ROS packages obtained via wstool are the Robotis Dynamixel APIs. They are available as debian packages via `apt`/`apt-get`. It might be possible to nos have to compile the Dynamixel stack and just grab into the main ROS installation folder:
+```
+sudo apt-get install ros-noetic-dynamixel-*
+```
+Doing so will then get the needed libraries.  Build the catkin workspace.
 
 ### Confirming Build w/LoCoBot
 
