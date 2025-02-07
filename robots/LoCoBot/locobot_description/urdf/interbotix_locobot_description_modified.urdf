@@ -655,7 +655,7 @@
 
     <link name="laser">
         <visual>
-            <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0 0 -0.017381"/>
+            <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0.017381 0 -0.04"/>
             <geometry>
                 <mesh filename="package://locobot_description/meshes/lidar_rough.STL" scale="0.001 0.001 0.001"/>
             </geometry>
@@ -664,14 +664,14 @@
             </material>
         </visual>
         <collision>
-            <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0 0 -0.017381"/>
+            <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0.017381 0 -0.04"/>
             <geometry>
                 <mesh filename="package://locobot_description/meshes/lidar_rough.STL" scale="0.001 0.001 0.001"/>
             </geometry>
         </collision>
     </link>
     <joint name="laser_joint" type="fixed">
-      <origin xyz="-0.01364 0.0  0.3966" rpy="0 3.14159265359 3.14159265359"/>
+      <origin xyz="-0.2047 0.0  0.384" rpy="0 3.14159265359 3.14159265359"/>
       <parent link="plate_1"/>
       <child link="laser"/>
     </joint>  
