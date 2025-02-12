@@ -1016,5 +1016,33 @@
             <rpyOffsets>0 0 0</rpyOffsets>  
             <!--<interface:position name="p3d_base_position"/>-->   
         </plugin>   
+
+    </gazebo>
+
+    <gazebo reference="laser">
+        <sensor type="ray" name="laser">
+            <pose>0 0 0 0 0 0</pose>
+            <visualize>false</visualize>
+            <update_rate>40</update_rate>
+            <ray>
+                <scan>
+                    <horizontal>
+                        <samples>3200</samples>
+                        <resolution>1</resolution>
+                        <min_angle>-3.14159265359</min_angle>
+                        <max_angle>3.14159265359</max_angle>
+                    </horizontal>
+                </scan>
+                <range>
+                    <min>0.05</min>
+                    <max>50.0</max>
+                    <resolution>0.013</resolution>
+                </range>
+            </ray>
+            <plugin name="hokuyo_node" filename="libgazebo_ros_laser.so">
+                <topicName>/scan</topicName>
+                <frameName>laser</frameName>
+            </plugin>
+        </sensor>
     </gazebo>
 </robot>
