@@ -6,9 +6,9 @@ import rospy
 from sensor_msgs.msg import LaserScan
 
 import numpy as np
-import matplotlib.pyplot as plt
 
 # TODO: Cut out points blocked by the arm too.
+# TODO 2: Can we fill in the dead points? It messes up PG.
 def main():
     rospy.init_node('lidar_scan_republisher')
     data_filename = rospy.get_param('~lidar_suppression_mask')

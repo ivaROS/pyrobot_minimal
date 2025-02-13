@@ -50,6 +50,8 @@
 
       <param name="GenAndTest/collision_details" value="false"/>
 
+      <param name="backward_enable" value="true"/>
+
       <param name="egocircle_cc_wrapper/robot_model/param_name" value="simplified_robot_description"/>
       <param name="egocircle_cc_wrapper/fixed_frame_id" value="$(arg fixed_frame_id)"/>
       <param name="egocircle_cc_wrapper/base_frame_id" value="$(arg base_frame_id)"/>
@@ -69,7 +71,7 @@
       <param name="trajectory_controller/holonomic_enable" value="false"/>
       <param name="trajectory_controller/max_ang" value="1"/>
 
-      <remap from="/cmd_vel_mux/input/navi" to="$(arg vel_topic)"/>
+      <!--remap from="/cmd_vel" to="/cmd_vel"/-->
 
       <param name="simulated_slow_global_plan_time" value="0" />
 
