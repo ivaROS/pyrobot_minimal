@@ -12,7 +12,11 @@ import matplotlib.pyplot as plt
 def main():
     rospy.init_node('lidar_scan_republisher')
     data_filename = rospy.get_param('~lidar_suppression_mask')
-    bad_mask = np.load(data_filename)
+
+    raw_bad_mask = np.load(data_filename)
+    extend = 20
+    bad_mask = np.logical_or(raw_bad_mask, np.roll(raw_bad_mask, extend))
+    bad_mask = np.logical_or(bad_mask, np.roll(raw_bad_mask, -extend))
 
     pub = rospy.Publisher("/scan", LaserScan)
     

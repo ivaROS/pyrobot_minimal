@@ -7,13 +7,13 @@
         <visual name="base_visual">
             <origin xyz="0 0 0.32" rpy="0 0 0"/>
             <geometry>
-              <box size="0.1 0.1 0.5"/>
+              <box size="0.35 0.35 0.5"/>
             </geometry>
         </visual>
         <collision>
             <origin xyz="0 0 0.32" rpy="0 0 0"/>
             <geometry>
-              <box size="0.1 0.1 0.5"/>
+              <box size="0.35 0.35 0.5"/>
             </geometry>
         </collision>
     </link>
