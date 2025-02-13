@@ -39,10 +39,12 @@ ROS_NAME="noetic"
 
 # GENERAL ROS DEPENDENCIES
 sudo apt-get -y install ros-$ROS_NAME-kdl-* ros-$ROS_NAME-trac-ik*
-sudo apt-get -y install ros-$ROS_NAME-cv-bridge
 
 # Realsense stuff
 sudo apt-get -y install ros-$ROS_NAME-librealsense2 ros-$ROS_NAME-realsense2-*
+
+# Dynamixel stuff
+sudo apt-get -y install ros-$ROS_NAME-dynamixel-*
 
 # PYTHON DEPENDENCIES
 echo "Python $PYTHON_VERSION needed for pyRobot installation."
@@ -84,6 +86,7 @@ declare -a ros_package_names=(
   	"ros-$ROS_NAME-ddynamic-reconfigure"
     "ros-$ROS_NAME-ros-control"
     "ros-$ROS_NAME-ros-controllers"
+    "ros-$ROS_NAME-cv-bridge"
 	#"ros-$ROS_NAME-libcreate"
 	)
 

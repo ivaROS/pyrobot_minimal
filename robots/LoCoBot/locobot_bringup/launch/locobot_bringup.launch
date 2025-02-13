@@ -1,45 +1,70 @@
 <launch>
 <!--
-  This file was adapted from turtlebot_bringup/launch/minimal.launch
+  Launch the LoCoBot, in either gazebo sim or real hardware by changing the "sim" argument.
+  Customized locobot with RPLIDAR S2P mounted on the back.
  -->
 
-  <!-- Turtlebot -->
-  <arg name="base"              default="$(env TURTLEBOT_BASE)"         doc="mobile base type [create, roomba]"/>
-  <arg name="battery"           default="$(env TURTLEBOT_BATTERY)"      doc="kernel provided locatio for battery info, use /proc/acpi/battery/BAT0 in 2.6 or earlier kernels." />
-  <arg name="3d_sensor"         default="$(env TURTLEBOT_3D_SENSOR)"    doc="3d sensor types [kinect, asux_xtion_pro]"/>
-  <arg name="simulation"        default="$(env TURTLEBOT_SIMULATION)"   doc="set flags to indicate this turtle is run in simulation mode."/>
-  <arg name="serialport"        default="$(env TURTLEBOT_SERIAL_PORT)"  doc="used by create to configure the port it is connected on [/dev/ttyUSB0, /dev/ttyS0]"/>
+  <!-- Sim args -->
+  <arg name="sim"           default="true"/>
+  <arg name="world_file" default="$(env TURTLEBOT_GAZEBO_WORLD_FILE)"/>
+  <arg name="gui"           default="true"/>
 
-  <param name="/use_sim_time" value="$(arg simulation)"/>
+  <!-- NOTE: We only tested with kobuki. -->
+  <arg name="base"          default="kobuki"        doc="mobile base type [create, roomba, kobuki]"/>
+  <!-- NOTE: locobot doesn't have battery readout. -->
+  <arg name="base_port"     default="$(env TURTLEBOT_SERIAL_PORT)"  doc="the port the mobile base is connected on [/dev/ttyUSB0, /dev/ttyS0]"/>
+  <arg name="lidar_port"    default="/dev/rplidar"  doc="the port the rplidar is connected on (usually /dev/rplidar)"/>
+  <arg name="robot_model"   default="$(find locobot_description)/urdf/interbotix_locobot_description_modified.urdf"  doc="urdf file for the robot. Defaults to the correct modified interbotix locobot."/>
 
-<!--
-  Below section adapted from turtlebot_bringup/launch/includes/robot.launch.xml
-  Collection of robot-centric definitions and nodes for the turtlebot. 
- -->
 
+  <param name="/use_sim_time" value="$(arg sim)"/>
+
+  <!-- Loading URDF and robot state publisher. -->
   <!-- Directly use passed in urdf file as argument, or default to the correct description -->
   <param
     name="robot_description"
-    textfile="$(find locobot_description)/urdf/interbotix_locobot_description_modified.urdf" />
+    textfile="$(arg robot_model)"/>
 
-  <!-- important generally, but specifically utilised by the current app manager -->  
+  <!-- Copying from turtlebot code. Unsure where this is used. -->  
   <param name="robot/name" value="$(optenv ROBOT turtlebot)"/>
-  <param name="robot/type" value="turtlebot"/>
+  <param name="robot/type" value="locobot_lidar"/>
   
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
-    <param name="publish_frequency" type="double" value="5.0" />
+    <param name="publish_frequency" type="double" value="30.0" />
   </node>
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-    <rosparam command="load" file="$(find turtlebot_bringup)/param/$(arg base)/diagnostics.yaml" />
-  </node>
-<!-- END robot.launch.xml-->
 
-  <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
-    <arg name="base" value="$(arg base)" />
-    <arg name="serialport" value="$(arg serialport)" />
-  </include>
-  <include unless="$(eval arg('battery') == 'None')" file="$(find turtlebot_bringup)/launch/includes/netbook.launch.xml">
-    <arg name="battery" value="$(arg battery)" />
-  </include>
+  <group if="$(arg sim)">
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="use_sim_time" value="true"/>
+      <arg name="debug" value="false"/>
+      <arg name="gui" value="$(arg gui)" />
+      <arg name="world_name" value="$(arg world_file)"/>
+    </include>
+    <!-- Gazebo model spawner -->
+    <node name="spawn_turtlebot_model" pkg="gazebo_ros" type="spawn_model"
+          args="$(optenv ROBOT_INITIAL_POSE) -unpause -urdf -param robot_description -model mobile_base"/>
+
+    <!-- Velocity muxer -->
+    <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+    <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
+          args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
+      <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
+      <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+    </node>
+  </group>
+
+  <group unless="$(arg sim)">
+    <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
+      <arg name="base" value="$(arg base)" />
+      <arg name="serialport" value="$(arg base_port)" />
+    </include>
+    <include file="$(find locobot_bringup)/launch/lidar.launch">
+      <arg name="serialport" value="$(arg lidar_port)" />
+    </include>
+
+    <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+      <rosparam command="load" file="$(find turtlebot_bringup)/param/$(arg base)/diagnostics.yaml" />
+    </node>
+  </group>
 
 </launch>
