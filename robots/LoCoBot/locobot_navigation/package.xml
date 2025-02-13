@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<package>
+  <name>locobot_navigation</name>
+  <version>0.0.1</version>
+  <description>locobot nav scripts (dr. vela's lab version) (using PiPS planners)</description>
+
+  <maintainer email="jpeng303@gatech.edu">Jing-Chen Peng</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+</package>

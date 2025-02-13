@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<robot name="box_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="box_robot">
+    <link name="base_link">
+        <visual name="base_visual">
+            <origin xyz="0 0 0.32" rpy="0 0 0"/>
+            <geometry>
+              <box size="0.1 0.1 0.5"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.32" rpy="0 0 0"/>
+            <geometry>
+              <box size="0.1 0.1 0.5"/>
+            </geometry>
+        </collision>
+    </link>
+    <gazebo reference="base_link">
+        <material value="Gazebo/Red"/>
+    </gazebo>
+  </xacro:macro>
+  
+  <xacro:box_robot/>
+</robot>

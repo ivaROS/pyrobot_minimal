@@ -47,7 +47,7 @@
 
 <!--         <remap from="/base/mobile_base/commands/motor_power" to="/mobile_base/commands/motor_power"/>
         <remap from="/base/mobile_base/commands/reset_odometry" to="/mobile_base/commands/reset_odometry"/>
-        <remap from="/base/mobile_base/commands/velocity" to="/mobile_base/commands/velocity"/>
+        <remap from="/base/mobile_base/commands/velocity" to="/cmd_vel"/>
         <remap from="/base/mobile_base/events/bumper" to="/mobile_base/events/bumper"/>
         <remap from="/base/mobile_base/events/cliff" to="/mobile_base/events/cliff"/>
         <remap from="/base/mobile_base/sensors/imu_data" to="/mobile_base/sensors/imu_data"/>

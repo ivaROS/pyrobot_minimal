@@ -4,10 +4,11 @@
     <arg name="use_vslam" default="false"/>
     <arg name="use_base" default="false"/>
     <arg name="torque_control" default="false"/>
-    <arg name="use_sim" default="false"/>
-    <arg name="teleop" default="false"/>
+    <arg name="use_sim" default="true"/>
+    <arg name="teleop" default="true"/>
     <arg name="use_rviz" default="true"/>
     <arg name="base" default="kobuki"/> <!-- Options: create and kobuki -->
+    <arg name="base_serial_port" default="$(env TURTLEBOT_SERIAL_PORT)"/>
 
     <param name="use_camera" value="$(arg use_camera)"/>
     <param name="use_arm" value="$(arg use_arm)"/>
@@ -40,8 +41,9 @@
 
         <group if="$(arg use_base)" >
 
-            <include file="$(find base_navigation)/launch/main_base.launch">
-                <arg name="base" value="$(arg base)"/>
+            <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
+                <arg name="base" value="$(arg base)" />
+                <arg name="serialport" value="$(arg base_serial_port)" />
             </include>
 
         </group>
@@ -60,6 +62,8 @@
         <node name="calibration_tf_broadcaster" pkg="locobot_calibration"
               type="calibration_publish_transforms.py"/>
 
+        <include file="$(find locobot_navigation)/launch/lidar.launch"/>
+
     </group>
 
     <!-- Gazebo -->
@@ -73,16 +77,16 @@
         <node name="locobot_gazebo" pkg="locobot_gazebo" type="locobot_gazebo" 
             respawn="true" output="screen"/> 
 
+        <include file="$(find locobot_navigation)/launch/sim_lidar.launch"/>
+
     </group>
 
 
     <!-- Common -->
 
-    <node name="turtlebot_controller_node" pkg="turtlebot_controller" 
-                            type="turtlebot_controller_node"/>
-                            
-    <node name="gpmp_action_server" pkg="locobot_control" 
-                            type="pointrobot3factor_ros_server.py" output="screen"/>
+    <!-- NOTE: crashes + we don't care -->
+    <!--node name="gpmp_action_server" pkg="locobot_control" 
+                            type="pointrobot3factor_ros_server.py" output="screen"/-->
 
     <node name="pyrobot_kinematics" pkg="pyrobot_bridge"
                   type="kinematics.py"/>
@@ -93,10 +97,8 @@
 
     
     <group if="$(eval arg('use_base') or arg('use_sim'))" >
-        <include file="$(find base_navigation)/launch/move_base.launch">
-            <arg name="use_map" value="$(arg use_vslam)"/>
-            <arg name="base" value="$(arg base)"/>
-        </include>
+        <node name="scan_dup" pkg="topic_tools" type="relay" args="/scan /scan_filtered" />
+        <include file="$(find locobot_navigation)/launch/locobot_gpf_pg_laser_controller.launch" pass_all_args="true" />
     </group>
 
 

@@ -4,13 +4,14 @@
   <!-- Static transform to make camera work in sim -->
   <node pkg="tf" type="static_transform_publisher" name="cam_transform" args="0 0 0 0 0 0 /camera_link /camera_color_optical_frame 100" />
 
-  <include file="$(find locobot_gazebo)/launch/empty_world.launch">  
+  <include file="$(find locobot_gazebo)/launch/empty_world.launch">
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>
     <arg name="gui" value="true"/>
     <arg name="recording" value="false"/>
     <arg name="debug" value="false"/>
     <arg name="base" value="$(arg base)"/>
+    <arg name="world_name" value="$(find locobot_gazebo)/worlds/playground.world"/>
   </include>
 
   <rosparam file="$(find locobot_gazebo)/config/robotic_arm_gazebo_joint_states.yaml" command="load"/>
@@ -38,11 +39,12 @@
     </node>
 
     <!-- Velocity muxer -->
+    <!-- NOTE: not used rn but kobuki wants it i guess-->
     <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
     <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
           args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
       <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
-      <remap from="cmd_vel_mux/output" to="mobile_base/commands/velocity"/>
+      <remap from="cmd_vel_mux/output" to="/cmd_vel"/>
     </node>
     <!-- Bumper / Cliff to PCD -->
     <include file="$(find turtlebot_bringup)/launch/includes/kobuki/bumper2pc.launch.xml"/>

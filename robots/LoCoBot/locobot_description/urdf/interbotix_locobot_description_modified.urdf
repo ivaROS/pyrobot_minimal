@@ -654,6 +654,12 @@
     </joint>
 
     <link name="laser">
+        <inertial>
+            <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0.017381 0 -0.04"/>
+            <mass value="0.3"/>
+            <!-- sketchy not at all accurate cylinder approximation -->
+            <inertia ixx="0.000182" ixy="0" ixz="0" iyy="0.000182" iyz="0" izz="0.00024"/>
+        </inertial>
         <visual>
             <origin rpy="-1.5707963267948966 0 1.5707963267948966" xyz="0.017381 0 -0.04"/>
             <geometry>
@@ -999,7 +1005,7 @@
             <wheelDiameter>0.070</wheelDiameter>    
             <wheelTorque>1.0</wheelTorque>  
             <!--wheelAcceleration>${wheel_accel}</wheelAcceleration-->  
-            <commandTopic>mobile_base/commands/velocity</commandTopic>  
+            <commandTopic>/cmd_vel</commandTopic>  
             <odometryTopic>odom</odometryTopic> 
             <odometryFrame>odom</odometryFrame> 
             <robotBaseFrame>base_footprint</robotBaseFrame> 
@@ -1040,7 +1046,7 @@
                 </range>
             </ray>
             <plugin name="hokuyo_node" filename="libgazebo_ros_laser.so">
-                <topicName>/scan</topicName>
+                <topicName>/scan_raw</topicName>
                 <frameName>laser</frameName>
             </plugin>
         </sensor>

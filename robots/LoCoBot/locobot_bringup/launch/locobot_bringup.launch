@@ -58,7 +58,7 @@
       <arg name="base" value="$(arg base)" />
       <arg name="serialport" value="$(arg base_port)" />
     </include>
-    <include file="$(find locobot_bringup)/launch/lidar.launch">
+    <include file="$(find locobot_navigation)/launch/lidar.launch">
       <arg name="serialport" value="$(arg lidar_port)" />
     </include>
 
