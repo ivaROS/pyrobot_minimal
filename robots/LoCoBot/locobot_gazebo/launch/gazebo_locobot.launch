@@ -12,7 +12,6 @@
     <arg name="debug" value="false"/>
     <arg name="base" value="$(arg base)"/>
     <arg name="world_name" value="$(find locobot_gazebo)/worlds/playground.world"/>
-    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
   </include>
 
   <rosparam file="$(find locobot_gazebo)/config/robotic_arm_gazebo_joint_states.yaml" command="load"/>

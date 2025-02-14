@@ -19,6 +19,7 @@ Panels:
   - Class: rviz/Tool Properties
     Expanded:
       - /2D Nav Goal1
+      - /Publish Point1
     Name: Tool Properties
     Splitter Ratio: 0.5
 Preferences:
@@ -439,6 +440,14 @@ Visualization Manager:
       Topic: /move_base/TebLocalPlannerROS/local_plan
       Unreliable: false
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: /exploration_polygon_marker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -453,6 +462,9 @@ Visualization Manager:
     - Class: rviz/Select
     - Class: rviz/SetGoal
       Topic: /move_base_simple/goal
+    - Class: rviz/PublishPoint
+      Single click: false
+      Topic: /clicked_point
   Value: true
   Views:
     Current:
@@ -473,9 +485,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.32979750633239746
+      Pitch: 0.7147971987724304
       Target Frame: base_footprint
-      Yaw: 4.626768589019775
+      Yaw: 5.966775894165039
     Saved: ~
 Window Geometry:
   Displays:
