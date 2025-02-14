@@ -1376,7 +1376,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "locobot_controller");
   ros::NodeHandle node_handle("");
 
-  std::string port_name = "/dev/ttyUSB0";
+  std::string port_name = "/dev/ttyUSB1";
   uint32_t baud_rate = 57600;
 
   if (argc < 2) {

@@ -12,6 +12,7 @@
     <arg name="debug" value="false"/>
     <arg name="base" value="$(arg base)"/>
     <arg name="world_name" value="$(find locobot_gazebo)/worlds/playground.world"/>
+    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
   </include>
 
   <rosparam file="$(find locobot_gazebo)/config/robotic_arm_gazebo_joint_states.yaml" command="load"/>
@@ -44,7 +45,7 @@
     <node pkg="nodelet" type="nodelet" name="cmd_vel_mux"
           args="load yocs_cmd_vel_mux/CmdVelMuxNodelet mobile_base_nodelet_manager">
       <param name="yaml_cfg_file" value="$(find turtlebot_bringup)/param/mux.yaml"/>
-      <remap from="cmd_vel_mux/output" to="/cmd_vel"/>
+      <remap from="cmd_vel_mux/output" to="/mobile_base/commands/velocity"/>
     </node>
     <!-- Bumper / Cliff to PCD -->
     <include file="$(find turtlebot_bringup)/launch/includes/kobuki/bumper2pc.launch.xml"/>

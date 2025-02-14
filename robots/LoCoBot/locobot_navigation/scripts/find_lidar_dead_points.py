@@ -9,6 +9,7 @@ def collect():
     all_data = []
     def callback(msg):
         scan_arr = np.array(msg.ranges)
+        print(scan_arr.shape)
         scan_arr[np.isnan(scan_arr)] = msg.range_max
         all_data.append(scan_arr)
 
