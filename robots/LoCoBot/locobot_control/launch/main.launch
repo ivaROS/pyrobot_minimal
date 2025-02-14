@@ -104,8 +104,9 @@
             <rosparam file="$(find locobot_navigation)/config/local_costmap_params.yaml" command="load" />
             <rosparam file="$(find locobot_navigation)/config/global_costmap_params.yaml" command="load" />
             <rosparam file="$(find locobot_navigation)/config/base_local_planner_params.yaml" command="load" />
-            <param name="TebLocalPlannerROS/inflation_dist" value="0.0" />
+            <param name="TebLocalPlannerROS/inflation_dist" value="0.2" />
             <param name="TebLocalPlannerROS/min_obstacle_dist" value="0.2" />
+            <param name="TebLocalPlannerROS/min_turning_radius" value="0.0" />
             <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
       	    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
         </node>
