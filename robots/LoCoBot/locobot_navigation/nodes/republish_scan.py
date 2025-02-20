@@ -22,7 +22,7 @@ def main():
     
     def scan_callback(msg):
         scan_arr = np.array(msg.ranges)
-        #scan_arr[np.isnan(scan_arr)] = msg.range_max
+        scan_arr[np.isnan(scan_arr)] = np.inf
         scan_arr[bad_mask] = np.nan
 
         out_msg = LaserScan()
