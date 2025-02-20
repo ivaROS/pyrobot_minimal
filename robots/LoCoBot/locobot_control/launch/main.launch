@@ -40,11 +40,16 @@
         </group>
 
         <group if="$(arg use_base)" >
+            <node pkg="nodelet" type="nodelet" name="mobile_base_nodelet_manager" args="manager"/>
+            <node pkg="nodelet" type="nodelet" name="mobile_base" args="load kobuki_node/KobukiNodelet mobile_base_nodelet_manager">
+                <rosparam file="$(find kobuki_node)/param/base.yaml" command="load"/>
+                <param name="device_port" value="$(arg base_serial_port)" />
+            </node>
 
-            <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
+            <!--include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
                 <arg name="base" value="$(arg base)" />
                 <arg name="serialport" value="$(arg base_serial_port)" />
-            </include>
+            </include-->
 
         </group>
 
@@ -119,6 +124,9 @@
             <arg name="use_rviz" value="$(arg use_rviz)"/>
         </include>
     </group>
+
+    <include file="$(find locobot_navigation)/launch/launch_mapping.launch">
+    </include>
 
     <group if="$(eval base =='kobuki')">
         <include file="$(find locobot_moveit_config)/launch/demo.launch">
