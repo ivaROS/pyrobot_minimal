@@ -23,10 +23,10 @@
   </node>
 
   <arg name="holonomic" default="$(optenv GM_PARAM_HOLONOMIC false)"/>
-  <arg name="projection_operator" default="false"/>
+  <arg name="projection_operator" default="true"/>
   <arg name="planning_inflated" default="$(optenv GM_PARAM_PLANNING_INFLATED false)"/>
   <arg name="far_feasible" default="$(optenv GM_PARAM_FAR_FEASIBLE true)"/>
-  <arg name="full_fov" default="$(optenv GM_PARAM_FULL_FOV false)"/>
+  <arg name="full_fov" default="$(optenv GM_PARAM_FULL_FOV true)"/>
   <arg name="inf_ratio" value="1.1" unless="$(arg planning_inflated)"/> <!--1.2-->
   <arg name="inf_ratio" value="0.0" if="$(arg planning_inflated)"/>
 
