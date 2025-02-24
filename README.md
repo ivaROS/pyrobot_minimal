@@ -37,7 +37,7 @@ Run `catkin build` <BR>
 
 #### ROS Install Alternative
 
-The main ROS packages obtained via wstool are the Robotis Dynamixel APIs. They are available as debian packages via `apt`/`apt-get`. It might be possible to nos have to compile the Dynamixel stack and just grab into the main ROS installation folder:
+The main ROS packages obtained via wstool are the Robotis Dynamixel APIs. They are available as debian packages via `apt`/`apt-get`. It might be possible to ros have to compile the Dynamixel stack and just grab into the main ROS installation folder:
 ```
 sudo apt-get install ros-noetic-dynamixel-*
 ```
@@ -47,7 +47,7 @@ Doing so will then get the needed libraries.  Build the catkin workspace.
 
 After sourcing `devel/setup.bash`, getting a basic Gazebo simulation up and running should involve the following:
 ```
-roslaunch locobot_gazebo gazbeo_locobot.launch base:=kobuki
+roslaunch locobot_gazebo gazebo_locobot.launch base:=kobuki
 rosrun robot_state_publisher robot_state_publisher
 roslaunch locobot_gazebo gazebo_locobot_control.launch
 ```
