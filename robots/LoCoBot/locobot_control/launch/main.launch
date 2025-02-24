@@ -10,6 +10,8 @@
     <arg name="base" default="kobuki"/> <!-- Options: create and kobuki -->
     <arg name="base_serial_port" default="$(env TURTLEBOT_SERIAL_PORT)"/>
 
+    <arg name="sim_world_name" default="$(find locobot_gazebo)/worlds/playground.world"/>
+
     <param name="use_camera" value="$(arg use_camera)"/>
     <param name="use_arm" value="$(arg use_arm)"/>
     <param name="use_vslam" value="$(arg use_vslam)"/>
@@ -76,6 +78,7 @@
         
         <include file="$(find locobot_gazebo)/launch/gazebo_locobot.launch">
             <arg name="base" value="$(arg base)"/>
+            <arg name="world_name" value="$(arg sim_world_name)"/>
         </include>
 
         <include file="$(find locobot_gazebo)/launch/gazebo_locobot_control.launch"/>
@@ -112,7 +115,7 @@
             <param name="TebLocalPlannerROS/inflation_dist" value="0.2" />
             <param name="TebLocalPlannerROS/min_obstacle_dist" value="0.2" />
             <param name="TebLocalPlannerROS/min_turning_radius" value="0.0" />
-            <param name="base_local_planner" value="teb_local_planner/TelLocalPlannerROS" />
+            <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
             <!--param name="base_local_planner" value="range_tree_gap/RangeTreeGapPlanner" /-->
       	    <remap from="/cmd_vel" to="/mobile_base/commands/velocity"/>
         </node>

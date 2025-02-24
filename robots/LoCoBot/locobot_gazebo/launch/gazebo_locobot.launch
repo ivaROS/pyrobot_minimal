@@ -1,5 +1,6 @@
 <launch>  
   <arg name="base"/>
+  <arg name="world_name" default="$(find locobot_gazebo)/worlds/playground.world"/>
 
   <!-- Static transform to make camera work in sim -->
   <node pkg="tf" type="static_transform_publisher" name="cam_transform" args="0 0 0 0 0 0 /camera_link /camera_color_optical_frame 100" />
@@ -11,7 +12,7 @@
     <arg name="recording" value="false"/>
     <arg name="debug" value="false"/>
     <arg name="base" value="$(arg base)"/>
-    <arg name="world_name" value="$(find locobot_gazebo)/worlds/playground.world"/>
+    <arg name="world_name" value="$(arg world_name)"/>
   </include>
 
   <rosparam file="$(find locobot_gazebo)/config/robotic_arm_gazebo_joint_states.yaml" command="load"/>
