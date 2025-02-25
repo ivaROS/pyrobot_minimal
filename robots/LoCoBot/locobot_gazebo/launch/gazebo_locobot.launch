@@ -27,8 +27,8 @@
       <arg name="load_robot_description" value="true"/>
     </include>
 
-    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find locobot_description)/urdf/locobot_lite_description.urdf -urdf -x $(arg x) -y $(arg y) -z $(arg z) -model locobot" />
+    <!--node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+          args="-file $(find locobot_description)/urdf/locobot_lite_description.urdf -urdf -x $(arg x) -y $(arg y) -z $(arg z) -model locobot" /-->
   </group>
 
   <group if="$(eval base =='kobuki')">
@@ -39,7 +39,7 @@
     </include>
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find locobot_description)/urdf/locobot_description.urdf -urdf -z 0.05 -model locobot" >
+          args="-file $(find locobot_description)/urdf/locobot_description.urdf -urdf -x $(arg x) -y $(arg y) -z $(arg z) -model locobot" >
     </node>
 
     <!-- Velocity muxer -->
