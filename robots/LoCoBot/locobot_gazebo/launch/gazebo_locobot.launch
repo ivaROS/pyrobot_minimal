@@ -1,6 +1,9 @@
 <launch>  
   <arg name="base"/>
-  <arg name="world_name" default="$(find locobot_gazebo)/worlds/playground.world"/>
+  <arg name="world_name" default="$(find locobot_gazebo)/worlds/empty_world.world"/>
+  <arg name="x" default="0"/>
+  <arg name="y" default="0"/>
+  <arg name="z" default="0.05"/>
 
   <!-- Static transform to make camera work in sim -->
   <node pkg="tf" type="static_transform_publisher" name="cam_transform" args="0 0 0 0 0 0 /camera_link /camera_color_optical_frame 100" />
@@ -25,7 +28,7 @@
     </include>
 
     <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
-          args="-file $(find locobot_description)/urdf/locobot_lite_description.urdf -urdf -z 0.05 -model locobot" />
+          args="-file $(find locobot_description)/urdf/locobot_lite_description.urdf -urdf -x $(arg x) -y $(arg y) -z $(arg z) -model locobot" />
   </group>
 
   <group if="$(eval base =='kobuki')">

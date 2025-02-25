@@ -11,6 +11,9 @@
     <arg name="base_serial_port" default="$(env TURTLEBOT_SERIAL_PORT)"/>
 
     <arg name="sim_world_name" default="$(find locobot_gazebo)/worlds/playground.world"/>
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0.05"/>
 
     <param name="use_camera" value="$(arg use_camera)"/>
     <param name="use_arm" value="$(arg use_arm)"/>
@@ -79,6 +82,9 @@
         <include file="$(find locobot_gazebo)/launch/gazebo_locobot.launch">
             <arg name="base" value="$(arg base)"/>
             <arg name="world_name" value="$(arg sim_world_name)"/>
+            <arg name="x" value="$(arg x)"/>
+            <arg name="y" value="$(arg y)"/>
+            <arg name="z" value="$(arg z)"/>
         </include>
 
         <include file="$(find locobot_gazebo)/launch/gazebo_locobot_control.launch"/>
