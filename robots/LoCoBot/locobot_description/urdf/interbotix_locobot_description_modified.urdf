@@ -681,6 +681,12 @@
       <parent link="plate_1"/>
       <child link="laser"/>
     </joint>  
+    <link name="laser_upright"/>
+    <joint name="flip_laser_joint" type="fixed">
+      <origin xyz="0.0 0.0 0.0" rpy="3.14159265359 0.0 0.0"/>
+      <parent link="laser"/>
+      <child link="laser_upright"/>
+    </joint>  
 
     <!-- Gazebo Plugins -->
     <gazebo>
