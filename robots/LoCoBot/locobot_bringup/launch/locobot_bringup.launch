@@ -15,6 +15,7 @@
   <arg name="base_port"     default="$(env TURTLEBOT_SERIAL_PORT)"  doc="the port the mobile base is connected on [/dev/ttyUSB0, /dev/ttyS0]"/>
   <arg name="lidar_port"    default="/dev/rplidar"  doc="the port the rplidar is connected on (usually /dev/rplidar)"/>
   <arg name="robot_model"   default="$(find locobot_description)/urdf/interbotix_locobot_description_modified.urdf"  doc="urdf file for the robot. Defaults to the correct modified interbotix locobot."/>
+  <arg name="use_arm"       default="true" />
 
 
   <param name="/use_sim_time" value="$(arg sim)"/>
@@ -53,13 +54,19 @@
     </node>
   </group>
 
+  <group if="$(arg use_arm)">
+    <param name="use_arm" value="true"/>
+  </group>
+  <param name="use_camera" value="true"/>
   <group unless="$(arg sim)">
     <include file="$(find turtlebot_bringup)/launch/includes/mobile_base.launch.xml">
       <arg name="base" value="$(arg base)" />
       <arg name="serialport" value="$(arg base_port)" />
     </include>
     <include file="$(find locobot_navigation)/launch/lidar.launch">
-      <arg name="serialport" value="$(arg lidar_port)" />
+      <arg name="serial_port" value="$(arg lidar_port)" />
+    </include>
+    <include file="$(find locobot_control)/launch/dynamixel_controllers.launch">
     </include>
 
     <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >

@@ -25,6 +25,12 @@
 #ifndef LOCOBOT_CONTROLLERS_H
 #define LOCOBOT_CONTROLLERS_H
 
+// WARN: piinocchio includes must be at the top of the file for it to compile.
+// Source: https://github.com/stack-of-tasks/pinocchio/issues/1449
+#include "pinocchio/parsers/urdf.hpp"
+#include "pinocchio/algorithm/joint-configuration.hpp"
+#include "pinocchio/algorithm/kinematics.hpp"
+
 #include <ros/ros.h>
 
 #include <yaml-cpp/yaml.h>
@@ -84,6 +90,10 @@ typedef struct {
 
 class LoCoBotController {
  private:
+
+  pinocchio::Model model_;
+  pinocchio::Data data_;
+
   // ROS NodeHandle
   ros::NodeHandle node_handle_;
   ros::NodeHandle priv_node_handle_;

@@ -20,12 +20,16 @@
 
 /*
  * Modified from dynamixel_workbench_controllers/dynamixel_workbench_controllers.cpp
- * Authors: Adithya Murali, Tao Chen, Dhiraj Gandhi
+ * Authors: Adithya Murali, Tao Chen, Dhiraj Gandhi, Jing-Chen Peng
  */
+// WARN: piinocchio includes must be at the top of the file for it to compile.
+// Source: https://github.com/stack-of-tasks/pinocchio/issues/1449
+#include "locobot_control/locobot_controller.h"
+
+#include <ros/package.h>
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "locobot_control/locobot_controller.h"
 
 static const uint8_t CURRENT_CONTROL_MODE                  = 0;
 static const uint8_t POSITION_CONTROL_MODE                 = 3;
@@ -40,6 +44,14 @@ LoCoBotController::LoCoBotController()
     is_initialized_(false),
     num_motors_(-1),
     prev_gripper_state_(-1) {
+
+  // TODO: Expose to be configured dynamically
+  const std::string pkg_loc = ros::package::getPath("locobot_description");
+  const std::string urdf_path = pkg_loc + std::string("/urdf/locobot_description.urdf");
+
+  pinocchio::urdf::buildModel(urdf_path, model_);
+  data_ = pinocchio::Data(model_);
+  // UNUSED - robot_state_publisher for now
 
   read_period_ = node_handle_.param<double>("dxl_read_period", 0.010f);
   write_period_ = node_handle_.param<double>("dxl_write_period", 0.010f);

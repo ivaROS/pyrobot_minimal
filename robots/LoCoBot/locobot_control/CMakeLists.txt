@@ -12,6 +12,7 @@ add_compile_options(-std=c++11)
 ################################################################################
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  roslib
   sensor_msgs
   geometry_msgs
   dynamixel_workbench_msgs
@@ -70,6 +71,10 @@ catkin_package(
  CATKIN_DEPENDS roscpp sensor_msgs geometry_msgs dynamixel_workbench_msgs dynamixel_workbench_toolbox actionlib actionlib_msgs
 )
 
+SET(PINOCCHIO_DIR $ENV{PINOCCHIO_PATH} CACHE PATH "Path to pinocchio dir")
+include_directories(${PINOCCHIO_DIR}/include)
+find_package(pinocchio REQUIRED HINTS ${PINOCCHIO_DIR}/lib)
+
 ################################################################################
 # Build
 ################################################################################
@@ -85,7 +90,7 @@ include_directories(
 
 add_executable(locobot_controller src/locobot_controller.cpp)
 add_dependencies(locobot_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
-target_link_libraries(locobot_controller ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
+target_link_libraries(locobot_controller ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES} pinocchio::pinocchio)
 #################################################################################
 ## Install
 #################################################################################
