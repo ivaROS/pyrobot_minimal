@@ -652,6 +652,14 @@
         <child link="camera_link"/>
         <axis xyz="0 0 0"/>
     </joint>
+    <link name="camera_frame">
+    </link>
+    <joint name="camera_coords" type="fixed">
+        <origin rpy="-1.57079632679489 0 -1.57079632679489" xyz="0 0 0"/>
+        <parent link="camera_link"/>
+        <child link="camera_frame"/>
+        <axis xyz="0 0 0"/>
+    </joint>
 
     <link name="laser">
         <inertial>
